@@ -9,6 +9,7 @@ class createSell {
     async newSell (req:express.Request, res:express.Response) {
         try{
                 const SellActiveShift = await shifts.findOne({
+                    where: {finishedAt: null},
                     order: [ [ 'createdAt', 'DESC' ]],
                 });
 
@@ -22,12 +23,10 @@ class createSell {
         else if(!ItemActiveSell){
             res.status(400).json({message: 'You need to create new Item at first'});
         }
-
-                
-                req.body = (ItemActiveSell.id, ItemActiveSell.price, SellActiveShift.id);
                 const shiftId = SellActiveShift.id;
                 const itemId = ItemActiveSell.id
                 const price = ItemActiveSell.price;
+                req.body = {itemId, price};
                 
                 const newSell = new Sells({shiftId, itemId, price});
                 await newSell.save();

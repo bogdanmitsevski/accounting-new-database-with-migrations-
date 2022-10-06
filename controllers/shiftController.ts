@@ -32,12 +32,13 @@ class Shift {
     async finishShift (req:express.Request, res:express.Response) {
         try{
             const finishedAt = moment();
-            req.body = {finishedAt};
             const lastData = await shifts.findOne({
                 order: [ [ 'createdAt', 'DESC' ]],
             });
+            const id = lastData.id;
+            req.body = {id};
             lastData.finishedAt = finishedAt;
-            await lastData.save();
+            await lastData.save({where:{id:lastData.id}});
             res.json({message:`FinishedAt to ID: ${lastData.id} was added`});
         }
         catch(e){
