@@ -13,4 +13,4 @@ router.use('/', require('./shift'));
 router.use('/', require('./shift'));
 router.use('/', require('./shift'));
 
-module.exports = router;
+export default router;

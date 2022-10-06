@@ -73,4 +73,4 @@ class Shift {
 
 };
 
-module.exports = new Shift();
+export default new Shift();

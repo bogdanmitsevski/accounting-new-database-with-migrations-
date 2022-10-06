@@ -32,4 +32,4 @@ class itemsController {
 
 };
 
-module.exports = new itemsController();
+export default new itemsController();

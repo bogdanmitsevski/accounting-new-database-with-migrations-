@@ -1,6 +1,6 @@
 import express from 'express';
 const router = express.Router();
-const itemsController = require('../controllers/itemsController');
+import itemsController from '../controllers/itemsController';
 
 router.get('/', itemsController.getItem);
 

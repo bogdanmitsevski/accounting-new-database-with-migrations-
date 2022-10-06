@@ -40,4 +40,4 @@ class createSell {
     };
 };
 
-module.exports = new createSell();
+export default new createSell();

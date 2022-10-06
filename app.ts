@@ -2,8 +2,9 @@ require('dotenv').config();
 import express from 'express';
 const sequelize = require('./db');
 const app = express();
+import root from './routes/index';
 app.use(express.json());
-app.use('/api', require('./routes/index'));
+app.use('/api', root);
 const port = process.env.PORT || 3111;
 
 const  start = async ()=>{

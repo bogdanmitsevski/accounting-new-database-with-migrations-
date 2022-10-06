@@ -1,6 +1,6 @@
 import express from 'express';
 const router = express.Router();
-const Shift = require('../controllers/shiftController');
+import Shift from '../controllers/shiftController';
 
 router.post('/startShift', Shift.startShift);
 
