@@ -1,6 +1,6 @@
-const sequelize = require('../db');
+import sequelize from '../db';
 
-const {DataTypes} = require('sequelize');
+import { DataTypes } from 'sequelize';
 
 const shifts = sequelize.define('shifts',{
     id:{type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
@@ -31,4 +31,4 @@ module.exports = {
     shifts,
     Items,
     Sells
-};
+}

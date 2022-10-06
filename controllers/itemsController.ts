@@ -4,8 +4,8 @@ const {Items} = require('../models/models');
 class itemsController {
     async getItem (req:express.Request, res:express.Response) {
         try {
-        const allItems = await Items.findAll();
-        res.json(allItems);
+            const allItems = await Items.findAll();
+            res.json(allItems);
         }
         catch(e){
             console.log(e);
@@ -13,16 +13,16 @@ class itemsController {
     };
 
     async createItem (req:express.Request, res:express.Response) {
-        try{
+        try {
             const{name, price} = req.body;
             const Item = await Items.findOne({where:{name}});
-            if(Item){
+            if(Item) {
                 return res.status(400).json({message:"Item was already created"});
             }
-            else{
-            const newItem = new Items({name, price});
-            await newItem.save();
-            res.json({message: `${name} was created`});
+            else {
+                const newItem = new Items({name, price});
+                await newItem.save();
+                res.json({message: `${name} was created`});
             }
         }
         catch(e){
