@@ -13,4 +13,8 @@ router.use('/', require('./shift'));
 router.use('/', require('./shift'));
 router.use('/', require('./shift'));
 
+//registration,login
+router.use('/', require('./users'));
+router.use('/', require('./users'));
+
 export default router;

@@ -1,9 +1,10 @@
 import express from 'express';
 const router = express.Router();
 import itemsController from '../controllers/itemsController';
+import authMiddleware from '../middleware/authMiddleware';
 
-router.get('/', itemsController.getItem);
+router.get('/', authMiddleware, itemsController.getItem);
 
-router.post('/', itemsController.createItem);
+router.post('/', authMiddleware, itemsController.createItem);
 
 module.exports = router;
