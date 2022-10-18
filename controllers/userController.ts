@@ -1,7 +1,7 @@
 import express from 'express';
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const {users} = require ('../models/models');
+import db from '../models';
 import { validationResult } from 'express-validator';
 const generateJwt = (id: any, email: any) => {
     return jwt.sign(
@@ -20,14 +20,14 @@ class userController {
         }
         else {
             const {email, password} = req.body;
-            const isUserRegistered = await users.findOne({where:{email}});
+            const isUserRegistered = await db.users.findOne({where:{email}});
         if(isUserRegistered) {
             res.status(400).json({message:`User with ${email} was already registered`})
         }
         else {
             console.log(isUserRegistered, email, password);
             const hashPasword = await bcrypt.hash(password, 8);
-            const newUser = await users.create({email, password:hashPasword});
+            const newUser = await db.users.create({email, password:hashPasword});
             const token = generateJwt(newUser.id, newUser.email);
             await newUser.save();
             res.json({message:`New User was succesfully created with token ${token}`});
@@ -44,7 +44,7 @@ class userController {
         
     try {
     const {email, password} = req.body;
-        const User = await users.findOne({where:{email}});
+        const User = await db.users.findOne({where:{email}});
         if(!User) {
             res.status(400).json({message:`User with this email ${email} does not exist`});
         }

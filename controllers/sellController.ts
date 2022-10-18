@@ -1,23 +1,21 @@
 import express from 'express';
 
-const {Sells} = require('../models/models');
-const {shifts} = require('../models/models');
-const {Items} = require('../models/models');
+import db from '../models';
 
 
 class createSell {
     async newSell (req:express.Request, res:express.Response) {
         try {
-            const SellActiveShift = await shifts.findOne ({
+            const SellActiveShift = await db.Shifts.findOne ({
                 where: {finishedAt: null},
                 order: [ [ 'createdAt', 'DESC' ]],
             });
 
-            const ItemActiveSell = await Items.findOne ({
+            const ItemActiveSell = await db.Items.findOne ({
                 order: [ [ 'createdAt', 'DESC' ]],
             });
 
-            const ItemsNumber = await Items.count();
+            const ItemsNumber = await db.Items.count();
 
             if(!SellActiveShift) {
                 res.status(400).json({message: 'You need to create new Shift at first'});
@@ -33,7 +31,7 @@ class createSell {
 
                 req.body = {itemId, price};
                 
-                const newSell = new Sells({shiftId, itemId, price});
+                const newSell = new db.sells({shiftId, itemId, price});
                 await newSell.save();
                 res.json({message:'newSell was created from last ItemId automatically, because Item is ONLY one. If you want add item manually, use post method body with itemId, price'});
             }
@@ -45,7 +43,7 @@ class createSell {
                 }
                 else {
                     const shiftId = SellActiveShift.id;
-                    const newSell = new Sells({shiftId, itemId, price});
+                    const newSell = new db.sells({shiftId, itemId, price});
                     await newSell.save();
                     res.json({message:'newSell was created'});
                 }

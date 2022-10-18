@@ -1,6 +1,5 @@
 import express from 'express';
-const {shifts} = require('../models/models');
-const {Sells} = require('../models/models');
+import db from '../models';
 import moment from 'moment';
 
 
@@ -8,7 +7,7 @@ class Shift {
     
     async startShift (req:express.Request, res:express.Response) {
         try{
-            const lastData = await shifts.findOne ({
+            const lastData = await db.Shifts.findOne ({
                 where: {finishedAt : null},
                 order: [ [ 'createdAt', 'DESC' ]],
             });
@@ -20,7 +19,7 @@ class Shift {
                 const startedAt = moment();
                 const finishedAt = null;
                 req.body = {startedAt, finishedAt};
-                const newShift = new shifts({startedAt, finishedAt});
+                const newShift = new db.Shifts({startedAt, finishedAt});
                 await newShift.save();
                 res.json({message:`New Shift with ID: ${newShift.id} was created`});
             }
@@ -33,7 +32,7 @@ class Shift {
     async finishShift (req:express.Request, res:express.Response) {
         try{
             const finishedAt = moment();
-            const lastData = await shifts.findOne ({
+            const lastData = await db.Shifts.findOne ({
                 order: [ [ 'createdAt', 'DESC' ]],
             });
             const id = lastData.id;
@@ -50,17 +49,17 @@ class Shift {
     async getLastShift (req:express.Request, res:express.Response) {
         try {
 
-            const lastData = await shifts.findOne ({
+            const lastData = await db.Shifts.findOne ({
                 order: [ [ 'createdAt', 'DESC' ]],
                 });
             if(!lastData) {
                 res.status(400).json({message:'You need to create Shift at first'});
             }
             else {
-                const lastShift = await shifts.findOne({
+                const lastShift = await db.Shifts.findOne({
                     order: [ [ 'createdAt', 'DESC' ]]
                 });
-                const lastSell = await Sells.findAll({
+                const lastSell = await db.sells.findAll({
                     where: {shiftId:lastShift.id},
                     order: [ [ 'createdAt', 'DESC' ]]
                 });
